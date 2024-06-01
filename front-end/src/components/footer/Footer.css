@@ -1,0 +1,21 @@
+.footer{
+    background-color: #eceded;
+    padding: 0 8px;
+    font-size: small;
+}
+
+.footer .part {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:4px 0;
+}
+
+.link, .socials {
+    gap: 8px;
+}
+
+.link > a, .icon{
+    cursor: pointer;
+}
+

@@ -1,0 +1,8 @@
+.btn-t1{
+    background-color: grey;
+    border: 2px solid grey;
+    color: white;
+    padding: 3px 20px;
+    border-radius: 8px;
+    width: fit-content;
+}

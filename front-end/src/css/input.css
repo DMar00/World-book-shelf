@@ -1,0 +1,37 @@
+input:focus{
+    outline: none;
+}
+
+input[type='text'], input[type='email'], input[type='password'], input[type='date']{
+    background-color: white;
+    border: 2px solid grey;
+    border-radius: 8px;
+    padding: 2px 5px;
+}
+
+
+
+/***search-bar***/
+.search-bar{
+    background-color: white !important;
+    display: flex;
+    border: 2px solid grey;
+    padding: 2px 3px;
+    border-radius: 8px;
+    width: fit-content;
+}
+
+.search-bar > form > input {
+    background-color: white !important;
+    border: none;
+    font-size: medium;
+    padding : 0 5px;
+    border-radius: 8px;
+}
+
+.search-bar > form > button {
+    background-color: white !important;
+    border: none;
+    padding: 0 2px;
+    border-radius: 8px;
+}

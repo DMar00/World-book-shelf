@@ -1,0 +1,58 @@
+.box{
+    background-color: white;
+    box-shadow: rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 2px 2px -1px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.03) 0px 5px 5px -2.5px, rgba(42, 51, 70, 0.03) 0px 10px 10px -5px, rgba(42, 51, 70, 0.03) 0px 24px 24px -8px;
+    padding : 10px 30px;
+    width: 90%; /*per dispositivi al di sotto dei 768px*/
+    margin: 20px 0;
+}
+
+.box > form .name-surname{
+    display: flex;
+    flex-direction: column; /*per dispositivi al di sotto dei 768px*/
+}
+
+/*da Tablet in su*/
+@media only screen and (min-width: 768px) {
+    .box{
+        min-width: 400px;
+        max-width: max-content;
+    }
+
+    .box > form .name-surname{
+        flex-direction: row;
+        gap: 10px;
+    }
+}
+
+.box, .box > form{
+    display: flex;
+    flex-direction: column;
+}
+
+.box h3 {
+    text-align: center;
+}
+
+.box > form  button {
+    margin-top: 20px;
+}
+
+/**********************************************/
+.switch-operation{
+    text-align: center;
+    color: grey;
+}
+
+.switch-operation > p{
+    font-size: 10pt;
+    margin-bottom: 0px !important;
+}
+
+.switch-operation > a {
+    font-size: 10pt;
+    font-weight: 500;
+    color: black;
+}
+
+
+
