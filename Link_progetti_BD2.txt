@@ -1,0 +1,15 @@
+https://github.com/lnrdmnc/NBA-Stats-All-Time
+
+https://github.com/graziamargarella/campionato_seriea_mongodb
+
+https://github.com/EmanueleFittipaldi/MongoDBInventory
+
+https://github.com/alfcan/mangiare-nel-mondo-BD2
+
+https://github.com/gianwario/SteamGamesDatabase/tree/develop
+
+https://github.com/ssilvestri15/NetflixTomatoeImdb/tree/main
+
+https://github.com/MariPS/Beijing2022
+
+https://github.com/Dar9586/CineMetrics

@@ -1,0 +1,14 @@
+.book{
+    height: 312px;
+    width: 208px;
+    background-color: grey;
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    background-image: url(../../assets/no_photo.avif);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+}

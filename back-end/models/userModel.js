@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({
     surname: {type: String, required: true},
     date: {type: String, required: true},
     email : {type: String, required: true, unique:true},
-    password : {type: String, required: true}
+    password : {type: String, required: true},
+    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'review' }]
 })
 
 //middleware pre save

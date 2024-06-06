@@ -4,6 +4,7 @@ import 'dotenv/config'
 import { connectDB } from "./config/db.js"
 import authRoutes from './routes/authRoutes.js'
 import userRoutes from './routes/userRoutes.js'
+import bookRoutes from './routes/bookRoutes.js'
 
 //app config
 const app = express()
@@ -19,6 +20,7 @@ connectDB();
 //api endpoint
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/book", bookRoutes);
 
 //
 app.get("/", (req, res) => {
