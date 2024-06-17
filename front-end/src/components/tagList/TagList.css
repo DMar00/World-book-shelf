@@ -1,0 +1,4 @@
+.list-gen{
+    display: flex;
+    flex-wrap: wrap;
+}

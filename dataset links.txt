@@ -2,17 +2,15 @@ Usati nel codice:
 https://www.kaggle.com/datasets/bahramjannesarr/goodreads-book-datasets-10m	[]  qui ci sono info su rating
 https://www.kaggle.com/datasets/dk123891/books-dataset-goodreadsmay-2024	[Book_Details.csv] qui ci sono cover, generi
 https://www.kaggle.com/datasets/sahilkirpekar/goodreads10k-dataset-cleaned      [Books.csv] qui ci sono altre cover
-https://github.com/zygmuntz/goodbooks-10k					[books_.csv] qui ci sono altre cover
-
+https://github.com/zygmuntz/goodbooks-10k					[books_.csv] qui ci sono altre cover	
+https://www.kaggle.com/datasets/ishikajohari/best-books-10k-multi-genre-data	[goodreads_data] altre info come genere
+https://www.kaggle.com/datasets/thedevastator/comprehensive-overview-of-52478-goodreads-best-b?resource=download [books_1.Best_Books_Ever.csv] 
 
 
 
 
 
 Altri dataset non usati fin ora
+https://mengtingwan.github.io/data/goodreads#datasets				[file json] qui altre cover
 https://www.kaggle.com/datasets/jealousleopard/goodreadsbooks
-https://www.kaggle.com/datasets/ishikajohari/best-books-10k-multi-genre-data	--> altre info come genere
 https://www.kaggle.com/datasets/michaelrussell4/10000-books-and-their-genres-standardized --> altre info come genere
-https://www.kaggle.com/datasets/brosen255/goodreads-books			--> altre info autore
-https://mengtingwan.github.io/data/goodreads#datasets				[]	
-(Detailed book graph (~2gb, about 2.3m books): goodreads_books.json.gz)

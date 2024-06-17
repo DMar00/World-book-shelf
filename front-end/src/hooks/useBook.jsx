@@ -9,7 +9,7 @@ const useBook = () => {
     const { user } = useAuth();
 
     //dati ed errori da passare ad Account.jsx
-    const [bookInfo, setBookInfo] = useState('');
+    const [bookInfo, setBookInfo] = useState();
     const [showError, setShowError] = useState({ value: false, message: '' });
 
     const location = useLocation();
@@ -42,12 +42,13 @@ const useBook = () => {
                 //funzione che fa richiesta per cercare se un libro esiste
                 const fetchBook = async () => {
                     try {
-                        const response = await axios.get(`http://localhost:4000/api/user/getUser`, {
-                            params: { id: idParam },
+                        const response = await axios.get(`http://localhost:4000/api/book/getBookById`, {
+                            params: { id_book : idParam.toString() },
                         });
 
                         if(response.data.success){
-                            setBookInfo({ id: response.data.bookData.id_book});
+                            console.log(response.data);
+                            setBookInfo(response.data.bookData);
                             setShowError({ value: false, message: '' });
                         }else{
                             setBookInfo(null);

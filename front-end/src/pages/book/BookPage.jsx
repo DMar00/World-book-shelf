@@ -4,8 +4,29 @@ import {Rating} from '@mui/material'
 import './BookPage.css'
 import TagList from '../../components/tagList/TagList'
 import Book from '../../components/book/Book'
+import useBook from '../../hooks/useBook'
+import ErrorPage from '../error/ErrorPage'
 
 const BookPage = () => {
+    const { bookInfo, showError} = useBook();
+
+
+    if(showError.value){
+        return(
+            <ErrorPage error={showError.message}/>
+        )
+    }
+
+    const total_review = bookInfo.number_stars_1 + bookInfo.number_stars_2 + bookInfo.number_stars_3 + bookInfo.number_stars_4 + bookInfo.number_stars_5;
+    const average = (
+        bookInfo.number_stars_1*1 + 
+        bookInfo.number_stars_2*2 + 
+        bookInfo.number_stars_3*3 + 
+        bookInfo.number_stars_4*4 +
+        bookInfo.number_stars_5*5 
+    )/total_review;
+    const average_review = average.toFixed(2);
+
   return (
     <div className='page my-4'>
       <Container>
@@ -29,25 +50,23 @@ const BookPage = () => {
                 </Row>
             </Col>
             <Col lg={9} sm={12}>
-                <h2>Book Title</h2>
-                <h4>Author</h4>
+                <h2>{bookInfo.title}</h2>
+                <h4>{bookInfo.authors}</h4>
                 <div className='rating-bar d-flex flex-row align-items-center gap-3'>
                     <Rating 
                         name="book-rating" 
-                        value={3.3} 
+                        value={average_review} 
                         precision={0.1}
                         size="large"
                         readOnly />
-                    <span>3.3</span>
+                    <span>{average_review}</span>
                 </div>
                 <div className='plot-box my-3'>
-                    <textarea readOnly>
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar.
-                    </textarea>
+                    <textarea readOnly value={bookInfo.description}/>
                 </div>
                 <div>
                     <h6>Genres:</h6>
-                    <TagList list={['genre1', 'genre2', 'genre3']}/>
+                    <TagList list={bookInfo.genres}/>
                 </div>
                 <hr/>
                 <div className='community-reviews'>
@@ -56,33 +75,38 @@ const BookPage = () => {
                         <div className='rating-bar d-flex flex-row align-items-center gap-3'>
                             <Rating 
                             name="book-rating" 
-                            value={3.3} 
+                            value={average_review} 
                             precision={0.1}
                             size="large"
                             readOnly />
-                            <span>3.3</span>
+                            <span>{average_review}</span>
                         </div>
                     </div>
                     <div className='d-flex flex-column gap-2'>
                         <div className='rate-bar d-flex flex-row gap-3 align-items-center'>
                             <span>5</span>
-                            <ProgressBar now={60} className='bar'/>
+                            <ProgressBar now={(bookInfo.number_stars_5 / total_review)*100} className='bar'/>
+                            <span>{bookInfo.number_stars_5}</span>
                         </div>
                         <div className='rate-bar d-flex flex-row gap-3 align-items-center'>
                             <span>4</span>
-                            <ProgressBar now={80} className='bar'/>
+                            <ProgressBar now={(bookInfo.number_stars_4 / total_review)*100} className='bar'/>
+                            <span>{bookInfo.number_stars_4}</span>
                         </div>
                         <div className='rate-bar d-flex flex-row gap-3 align-items-center'>
                             <span>3</span>
-                            <ProgressBar now={20} className='bar'/>
+                            <ProgressBar now={(bookInfo.number_stars_3 / total_review)*100} className='bar'/>
+                            <span>{bookInfo.number_stars_3}</span>
                         </div>
                         <div className='rate-bar d-flex flex-row gap-3 align-items-center'>
                             <span>2</span>
-                            <ProgressBar now={10} className='bar'/>
+                            <ProgressBar now={(bookInfo.number_stars_2 / total_review)*100} className='bar'/>
+                            <span>{bookInfo.number_stars_2}</span>
                         </div>
                         <div className='rate-bar d-flex flex-row gap-3 align-items-center'>
                             <span>1</span>
-                            <ProgressBar now={40} className='bar'/>
+                            <ProgressBar now={(bookInfo.number_stars_1 / total_review)*100} className='bar'/>
+                            <span>{bookInfo.number_stars_1}</span>
                         </div>
                     </div>
                 </div>
