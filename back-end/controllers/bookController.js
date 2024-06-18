@@ -94,7 +94,6 @@ export const getBookById = async (req, res) => {
 
 export const dropAllBooks = async (req, res) => {
     try {
-        // Utilizza il metodo `deleteMany` di Mongoose per eliminare tutti i documenti
         const result = await bookModel.deleteMany({});
         
         res.json({ 
