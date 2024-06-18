@@ -71,6 +71,75 @@ export const addBook = async (req, res) => {
     
 }
 
+export const addBookContinue = async (req, res) => {
+    const { id_book, 
+        title, 
+        authors,  
+        genres, 
+        description, 
+        publisher, 
+        publish_year, 
+        pages_number, 
+        language,
+        number_stars_1,
+        number_stars_2,
+        number_stars_3,
+        number_stars_4,
+        number_stars_5,
+        coverUrl } = req.body;
+    try {
+        // Verifico se id libro esiste già nel database
+        const existingBookId = await bookModel.findOne({ id_book });
+        if (!existingBookId) {
+            // Scarica l'immagine da URL e convertila in Base64
+            let cover = '';
+            if (coverUrl) {
+                const response = await axios.get(coverUrl, { responseType: 'arraybuffer' });
+                const buffer = Buffer.from(response.data, 'binary').toString('base64');
+                cover= `data:${response.headers['content-type']};base64,${buffer}`;
+            }
+
+
+            // Creazione di un nuovo utente nel database
+            const newBook = new bookModel({
+                id_book,
+                title,  
+                authors, 
+                cover, 
+                genres, 
+                description, 
+                publisher, 
+                publish_year, 
+                pages_number, 
+                language,
+                number_stars_1,
+                number_stars_2,
+                number_stars_3,
+                number_stars_4,
+                number_stars_5
+            });
+
+            await newBook.save();
+
+            res.json({ 
+                success: true,
+                message:'Book ['+id_book+'] Added',
+            });
+        }else{
+            res.json({ 
+                success: true,
+                message:'Book ['+id_book+'] EXIST',
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ 
+            success: false,
+            message: 'Errore del server' 
+        });
+    }
+}
+
 export const getBookById = async (req, res) => {
     //id in url query
     const { id_book } = req.query;

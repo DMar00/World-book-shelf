@@ -7,10 +7,10 @@ const bookSchema = new mongoose.Schema({
     cover : {type: String}, //Binary for MongoDB
     genres: [{ type: String }],  // Array di stringhe per i generi
     description: { type:String , required: true },
-    publisher: { type: String, required: true }, 
+    publisher: { type: String}, 
     publish_year: { type: String, required: true }, 
     pages_number: { type: Number, required: true, default: 0 }, 
-    language:  { type: String, required: true }, 
+    language:  { type: String }, 
     number_stars_1: { type: Number, default: 0 }, 
     number_stars_2: { type: Number, default: 0 }, 
     number_stars_3: { type: Number, default: 0 }, 

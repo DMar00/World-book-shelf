@@ -1,11 +1,26 @@
 import mongoose from "mongoose"
 
 const project_name = "worldbookshelf_db";
-const password = "2GQbVFBxApNTIrD9";
-const user = "admin";
+//const password = "2GQbVFBxApNTIrD9";
+//const user = "admin";
 
+const string = "mongodb://127.0.0.1:27017/" + project_name;
+
+/*
 export const connectDB = async () => {
-    await mongoose.connect("mongodb+srv://"+user+":"+password+"@cluster0.5k22rss.mongodb.net/"+project_name).then(
+    await mongoose.connect(string, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }).then(
         ()=>console.log("DB connected")
     )
-}
+}*/
+
+export const connectDB = async () => {
+    try {
+        await mongoose.connect(string);
+        console.log("DB connected");
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error.message);
+    }
+};
