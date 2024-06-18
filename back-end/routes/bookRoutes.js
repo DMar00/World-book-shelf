@@ -1,9 +1,10 @@
 import express from 'express';
-import { addBook, getBookById } from '../controllers/bookController.js';
+import { addBook, getBookById, dropAllBooks } from '../controllers/bookController.js';
 
 const router = express.Router();
 
 router.post('/addBook', addBook);
 router.get('/getBookById', getBookById);
+router.post('/dropAllBooks', dropAllBooks);
 
 export default router;

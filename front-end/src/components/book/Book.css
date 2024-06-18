@@ -1,12 +1,12 @@
 .book{
     height: 312px;
     width: 208px;
-    background-color: grey;
+    /*background-color: grey;*/
     border-top-right-radius: 18px;
     border-bottom-right-radius: 18px;
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
-    background-image: url(../../assets/no_photo.avif);
+    /*background-image: url(../../assets/no_photo.avif);*/
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

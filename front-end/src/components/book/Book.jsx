@@ -1,9 +1,9 @@
 import React from 'react'
 import './Book.css'
 
-const Book = ({url}) => {
+const Book = ({imageUrl}) => {
   return (
-    <div className='book'>
+    <div className='book' style={{ backgroundImage: `url(${imageUrl})` }}>
       
     </div>
   )

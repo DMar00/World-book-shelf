@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {Container, Col, Row, ProgressBar} from 'react-bootstrap'
 import {Rating} from '@mui/material'
 import './BookPage.css'
@@ -8,8 +8,7 @@ import useBook from '../../hooks/useBook'
 import ErrorPage from '../error/ErrorPage'
 
 const BookPage = () => {
-    const { bookInfo, showError} = useBook();
-
+    const { bookInfo, showError, totalStars, averageStars} = useBook();
 
     if(showError.value){
         return(
@@ -17,15 +16,9 @@ const BookPage = () => {
         )
     }
 
-    const total_review = bookInfo.number_stars_1 + bookInfo.number_stars_2 + bookInfo.number_stars_3 + bookInfo.number_stars_4 + bookInfo.number_stars_5;
-    const average = (
-        bookInfo.number_stars_1*1 + 
-        bookInfo.number_stars_2*2 + 
-        bookInfo.number_stars_3*3 + 
-        bookInfo.number_stars_4*4 +
-        bookInfo.number_stars_5*5 
-    )/total_review;
-    const average_review = average.toFixed(2);
+    if (!bookInfo) {
+        return <div>Loading...</div>; // Oppure un messaggio di "Nessuna informazione sul libro disponibile"
+    }
 
   return (
     <div className='page my-4'>
@@ -34,7 +27,7 @@ const BookPage = () => {
             <Col lg={3} sm={12}>
                 <Row className='d-flex justify-content-center gap-3'>
                     <div className='d-flex justify-content-center'>
-                        <Book/>
+                        <Book imageUrl={bookInfo.cover}/>
                     </div>
                     <div className='d-flex justify-content-center'>
                         <button className='btn-t1'>Want to read</button>
@@ -55,11 +48,11 @@ const BookPage = () => {
                 <div className='rating-bar d-flex flex-row align-items-center gap-3'>
                     <Rating 
                         name="book-rating" 
-                        value={average_review} 
+                        value={averageStars} 
                         precision={0.1}
                         size="large"
                         readOnly />
-                    <span>{average_review}</span>
+                    <span>{averageStars}</span>
                 </div>
                 <div className='plot-box my-3'>
                     <textarea readOnly value={bookInfo.description}/>
@@ -75,40 +68,41 @@ const BookPage = () => {
                         <div className='rating-bar d-flex flex-row align-items-center gap-3'>
                             <Rating 
                             name="book-rating" 
-                            value={average_review} 
+                            value={averageStars} 
                             precision={0.1}
                             size="large"
                             readOnly />
-                            <span>{average_review}</span>
+                            <span>{averageStars}</span>
                         </div>
                     </div>
+                    
                     <div className='d-flex flex-column gap-2'>
                         <div className='rate-bar d-flex flex-row gap-3 align-items-center'>
                             <span>5</span>
-                            <ProgressBar now={(bookInfo.number_stars_5 / total_review)*100} className='bar'/>
+                            <ProgressBar now={(bookInfo.number_stars_5 / totalStars)*100} className='bar'/>
                             <span>{bookInfo.number_stars_5}</span>
                         </div>
                         <div className='rate-bar d-flex flex-row gap-3 align-items-center'>
                             <span>4</span>
-                            <ProgressBar now={(bookInfo.number_stars_4 / total_review)*100} className='bar'/>
+                            <ProgressBar now={(bookInfo.number_stars_4 / totalStars)*100} className='bar'/>
                             <span>{bookInfo.number_stars_4}</span>
                         </div>
                         <div className='rate-bar d-flex flex-row gap-3 align-items-center'>
                             <span>3</span>
-                            <ProgressBar now={(bookInfo.number_stars_3 / total_review)*100} className='bar'/>
+                            <ProgressBar now={(bookInfo.number_stars_3 / totalStars)*100} className='bar'/>
                             <span>{bookInfo.number_stars_3}</span>
                         </div>
                         <div className='rate-bar d-flex flex-row gap-3 align-items-center'>
                             <span>2</span>
-                            <ProgressBar now={(bookInfo.number_stars_2 / total_review)*100} className='bar'/>
+                            <ProgressBar now={(bookInfo.number_stars_2 / totalStars)*100} className='bar'/>
                             <span>{bookInfo.number_stars_2}</span>
                         </div>
                         <div className='rate-bar d-flex flex-row gap-3 align-items-center'>
                             <span>1</span>
-                            <ProgressBar now={(bookInfo.number_stars_1 / total_review)*100} className='bar'/>
+                            <ProgressBar now={(bookInfo.number_stars_1 / totalStars)*100} className='bar'/>
                             <span>{bookInfo.number_stars_1}</span>
                         </div>
-                    </div>
+                     </div>
                 </div>
                 <hr/>
             </Col>

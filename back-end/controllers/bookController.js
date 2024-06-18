@@ -1,11 +1,10 @@
 import bookModel from '../models/bookModel.js';
+import axios from 'axios';
 
 export const addBook = async (req, res) => {
     const { id_book, 
             title, 
-            isbn, 
-            authors, 
-            cover, 
+            authors,  
             genres, 
             description, 
             publisher, 
@@ -16,7 +15,8 @@ export const addBook = async (req, res) => {
             number_stars_2,
             number_stars_3,
             number_stars_4,
-            number_stars_5 } = req.body;
+            number_stars_5,
+            coverUrl } = req.body;
     try {
         // Verifico se id libro esiste già nel database
         const existingBookId = await bookModel.findOne({ id_book });
@@ -26,11 +26,19 @@ export const addBook = async (req, res) => {
             });
         }
 
+        // Scarica l'immagine da URL e convertila in Base64
+        let cover = '';
+        if (coverUrl) {
+            const response = await axios.get(coverUrl, { responseType: 'arraybuffer' });
+            const buffer = Buffer.from(response.data, 'binary').toString('base64');
+            cover= `data:${response.headers['content-type']};base64,${buffer}`;
+        }
+
+
         // Creazione di un nuovo utente nel database
         const newBook = new bookModel({
             id_book,
-            title, 
-            isbn, 
+            title,  
             authors, 
             cover, 
             genres, 
@@ -82,4 +90,22 @@ export const getBookById = async (req, res) => {
             success: false,
             message: 'Book \''+id_book+'\' not found', 
         });   
+}
+
+export const dropAllBooks = async (req, res) => {
+    try {
+        // Utilizza il metodo `deleteMany` di Mongoose per eliminare tutti i documenti
+        const result = await bookModel.deleteMany({});
+        
+        res.json({ 
+            success: true,
+            message: 'All books deleted',
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ 
+            success: false,
+            message: 'Errore del server' 
+        });
+    }
 }

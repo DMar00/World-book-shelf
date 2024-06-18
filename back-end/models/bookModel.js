@@ -4,7 +4,7 @@ const bookSchema = new mongoose.Schema({
     id_book:{ type: String, required: true, unique: true},
     title: { type: String, required: true },
     authors: { type: String, required: true },
-    cover : {type: Buffer}, //Binary for MongoDB
+    cover : {type: String}, //Binary for MongoDB
     genres: [{ type: String }],  // Array di stringhe per i generi
     description: { type:String , required: true },
     publisher: { type: String, required: true }, 
