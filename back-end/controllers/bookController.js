@@ -29,9 +29,14 @@ export const addBook = async (req, res) => {
         // Scarica l'immagine da URL e convertila in Base64
         let cover = '';
         if (coverUrl) {
-            const response = await axios.get(coverUrl, { responseType: 'arraybuffer' });
-            const buffer = Buffer.from(response.data, 'binary').toString('base64');
-            cover= `data:${response.headers['content-type']};base64,${buffer}`;
+            try {
+                const response = await axios.get(coverUrl, { responseType: 'arraybuffer' });
+                const buffer = Buffer.from(response.data, 'binary').toString('base64');
+                cover = `data:${response.headers['content-type']};base64,${buffer}`;
+            } catch (error) {
+                console.error('Errore durante il download dell\'immagine:', error.message);
+                // Se si verifica un errore nel download dell'immagine, loggo l'errore ma continuo senza copertina
+            }
         }
 
 
@@ -94,12 +99,16 @@ export const addBookContinue = async (req, res) => {
             // Scarica l'immagine da URL e convertila in Base64
             let cover = '';
             if (coverUrl) {
-                const response = await axios.get(coverUrl, { responseType: 'arraybuffer' });
-                const buffer = Buffer.from(response.data, 'binary').toString('base64');
-                cover= `data:${response.headers['content-type']};base64,${buffer}`;
+                try {
+                    const response = await axios.get(coverUrl, { responseType: 'arraybuffer' });
+                    const buffer = Buffer.from(response.data, 'binary').toString('base64');
+                    cover = `data:${response.headers['content-type']};base64,${buffer}`;
+                } catch (error) {
+                    console.error('Errore durante il download dell\'immagine:', error.message);
+                    // Se si verifica un errore nel download dell'immagine, loggo l'errore ma continuo senza copertina
+                }
             }
-
-
+            
             // Creazione di un nuovo utente nel database
             const newBook = new bookModel({
                 id_book,
