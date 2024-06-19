@@ -18,3 +18,22 @@ export const getUser = async (req, res) => {
             message: 'User \''+username+'\' not found', 
         });   
 }
+
+export const existUser = async (req, res) => {
+    const {username} = req.body;
+
+    //ricerco utente tramite username
+    const existingUser = await UserModel.findOne({ username });
+
+    if(existingUser)
+        return res.json({ 
+            success: true,
+            message: 'User \''+username+'\' found',
+            userData: existingUser
+        });
+    else
+        return res.json({ 
+            success: false,
+            message: 'User \''+username+'\' not found', 
+        });   
+}

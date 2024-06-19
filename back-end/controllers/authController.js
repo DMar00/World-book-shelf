@@ -13,6 +13,7 @@ export const signup = async (req, res) => {
         const existingUser = await UserModel.findOne({ username });
         if (existingUser) {
             return res.status(400).json({ 
+                success: false,
                 message: 'Username già in uso' 
             });
         }
@@ -45,7 +46,7 @@ export const signup = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ 
-            success: true,
+            success: false,
             message: 'Errore del server' 
         });
     }
