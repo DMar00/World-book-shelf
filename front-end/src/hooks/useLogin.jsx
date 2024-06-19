@@ -13,9 +13,13 @@ const useLogin = (formData) => {
     //eventuali errori sul login
     const [showError, setShowError] = useState({ value: false, message: '' });
 
-
     //invio richiesta per login al submit
     const handleSubmit = async (e) => {
+        // Verifica se formData.username è vuoto
+        if (!formData.username) {
+            return;
+        }
+
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:4000/api/auth/login', {

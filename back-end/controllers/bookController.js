@@ -177,3 +177,76 @@ export const dropAllBooks = async (req, res) => {
         });
     }
 }
+
+export const topRatingBooks = async (req, res) => {
+    try {
+        const books = await bookModel.aggregate([
+            {
+                $addFields: {
+                    totalReviews: {
+                        $add: ["$number_stars_1", "$number_stars_2", "$number_stars_3", "$number_stars_4", "$number_stars_5"]
+                    }
+                }
+            },
+            {
+                $addFields: {
+                    averageRating: {
+                        $cond: {
+                            if: { $eq: ["$totalReviews", 0] },
+                            then: 0,
+                            else: {
+                                $divide: [
+                                    {
+                                        $add: [
+                                            { $multiply: ["$number_stars_1", 1] },
+                                            { $multiply: ["$number_stars_2", 2] },
+                                            { $multiply: ["$number_stars_3", 3] },
+                                            { $multiply: ["$number_stars_4", 4] },
+                                            { $multiply: ["$number_stars_5", 5] }
+                                        ]
+                                    },
+                                    "$totalReviews"
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    id_book: 1,
+                    title: 1,
+                    authors: 1,
+                    cover: 1,
+                    totalReviews: 1,
+                    averageRating: 1
+                }
+            },
+            {
+                $sort: { averageRating: -1 }  // Ordina per la media della valutazione in ordine decrescente
+            },
+            {
+                $limit: 5  // Limita il risultato ai primi 5 libri
+            }
+        ]);
+
+        if (books.length > 0) {
+            return res.json({
+                success: true,
+                message: 'Top 5 books sorted by highest rating',
+                books: books
+            });
+        } else {
+            return res.json({
+                success: false,
+                message: 'No books found'
+            });
+        }
+    } catch (error) {
+        console.error('Error while fetching top rated books:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error while fetching top rated books'
+        });
+    }
+}

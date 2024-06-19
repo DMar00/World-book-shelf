@@ -12,9 +12,17 @@ export const signup = async (req, res) => {
         // Verifico se l'utente esiste già nel database
         const existingUser = await UserModel.findOne({ username });
         if (existingUser) {
-            return res.status(400).json({ 
+            return res.json({ 
                 success: false,
-                message: 'Username già in uso' 
+                message: 'username already exists' 
+            });
+        }
+
+        const existingEmail = await UserModel.findOne({ email });
+        if (existingEmail) {
+            return res.json({ 
+                success: false,
+                message: 'email already exists' 
             });
         }
     
@@ -66,7 +74,7 @@ export const login = async (req, res) => {
         if (!user) 
             return res.json({
                 success:false,
-                message: 'User \'' + username + '\'does not exist'
+                message: 'user [' + username + '] does not exist'
             });
         
         //confronto se la password inserita e la password dell'utente nel db coincidono

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import useSignUp from '../../hooks/useSignUp';
 import { Container } from 'react-bootstrap';
-import './Signup.css'
 import '../../css/auth.css';
 
 const Signup = () => {
@@ -37,6 +36,7 @@ const Signup = () => {
                         <label>Username</label>
                         <input type='text' name='username' value={formData.username} onChange={handleChange} />
                         <span className='error-mex'>{formError.usernameRegex}</span>
+                        
 
                         <label>Email</label>
                         <input type='email' name='email' value={formData.email} onChange={handleChange} />
@@ -69,18 +69,18 @@ const Signup = () => {
                         <span className='error-mex'>{formError.password2}</span>
                         <span className='error-mex'>{formError.passwordConfirm}</span>
 
-                        <div className='d-flex align-items-center justify-content-center'>
+                        <div className='d-flex flex-column  align-items-center justify-content-center'>
                             <button type='submit' className='btn-t1'>Sign Up</button>
+                            {showError.value && <span className='error-mex'>{showError.message}</span>}
                         </div>
+                        
                     </form>
                     <div className='switch-operation'>
                         <hr />
                         <p>Already have an account?</p>
                         <a href='/login'>Login</a>
                     </div>
-                    {
-                        showError.value && <p>Error : {showError.message}</p>
-                    }
+                    
                 </div>
             </Container>
         </div>

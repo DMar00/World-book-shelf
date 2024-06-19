@@ -3,6 +3,7 @@ import useLogin from '../../hooks/useLogin'
 import { Container } from 'react-bootstrap'
 import '../../css/auth.css'
 
+
 const Login = () => {
     //dati inseriti nel form
     const [formData, setFormData] = useState({
@@ -28,6 +29,7 @@ const Login = () => {
                     <form onSubmit={handleSubmit}>
                         <label>Username</label>
                         <input type='text' name='username'  value={formData.username} onChange={handleChange}/>
+                        {showError.value ? <span className='error-mex'>{showError.message} </span> : <span></span>}
                         
                         <label>Password</label>
                         <input type='password' name='password'  value={formData.password} onChange={handleChange}/>
@@ -41,9 +43,6 @@ const Login = () => {
                         <p>New to WorldBookShelf ?</p>
                         <a href='/signup'>Sign Up</a>
                     </div>
-                    {
-                        showError.value ? <p>Error : {showError.message} </p> : <p></p>
-                    }
                 </div>
             </Container>
         </div>

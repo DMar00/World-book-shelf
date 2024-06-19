@@ -113,7 +113,7 @@ const useSignUp = (formData) => {
                 surname: formData.surname,
                 date: formData.date
             });
-
+            
             if (response.data.success) {
                 login(formData.username);  // Effettua l'autenticazione con token e reindirizzamento
                 setShowError({ value: false, message: '' });
@@ -122,6 +122,7 @@ const useSignUp = (formData) => {
             }
 
         } catch (error) {
+            //setShowError({ value: true, message: error });
             console.error('Errore durante la richiesta di signup:', error);
         }
     }

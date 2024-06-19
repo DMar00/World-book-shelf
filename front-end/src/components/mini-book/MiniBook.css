@@ -1,0 +1,19 @@
+.mini-book .book {
+    height: 187.2px;
+    width: 124.8px;
+  }
+
+.mini-title{
+    max-width: 124.8px;
+    font-size: small;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mini-authors{
+    max-width: 124.8px;
+    font-size: small;
+    color: #2A2A2A;
+}
