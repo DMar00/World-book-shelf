@@ -55,19 +55,18 @@ const useAccount = () => {
                 setUserInfo('');
                 setShowError({value:true, message: 'Null username'});
                 setIsMyAccount(false);
-            } else if (user && usernameParam === user.username) {
-                // sono loggata e visito mio profilo
-                //console.log('sei ' + user.username);
-                setUserInfo(user);
-                setShowError({value:false, message: ''});
-                setIsMyAccount(true);
-            } else {
-                //visito profilo altro utente
-                /*if(user)
-                    console.log('non sei '+ user.username);
-                */
-                //cerco se esiste quell'utente
-                //funzione che fa richiesta per cercare se un utente esiste
+            } else /*if (user && usernameParam === user.username) */{
+                console.log("control: "+ user && usernameParam === user.username);
+                if (user && usernameParam === user.username){
+                    // sono loggata e visito mio profilo
+                    console.log("sei nel tuo profilo");
+                    setIsMyAccount(true);
+                } else {
+                    //visito profilo altro utente
+                    console.log("non sei nel tuo profilo");
+                    setIsMyAccount(false);
+                }
+
                 const fetchUser = async () => {
                     try {
                         const response = await axios.get(`http://localhost:4000/api/user/getUser`, {
@@ -75,24 +74,64 @@ const useAccount = () => {
                         });
 
                         if(response.data.success){
-                            setUserInfo({username: response.data.userData.username});
+                            setUserInfo({
+                                username: response.data.userData.username,
+                                name: response.data.userData.name,
+                                surname: response.data.userData.surname
+                            });
                             setShowError({ value: false, message: '' });
-                            setIsMyAccount(false);
+                            //setIsMyAccount(false);
                         }else{
                             setUserInfo(null);
                             setShowError({ value: true, message: response.data.message });
-                            setIsMyAccount(false);
+                            //setIsMyAccount(false);
                         } 
                     } catch (error) {
                         console.error(error);
                         setShowError({ value: true, message: 'Errors occurred while retrieving the account' });
                         setUserInfo(null);
-                        setIsMyAccount(false);
+                        //setIsMyAccount(false);
                     }
                 };
 
                 fetchUser();
-            }
+                
+            } /*else {*/
+                
+                /*if(user)
+                    console.log('non sei '+ user.username);
+                */
+                //cerco se esiste quell'utente
+                //funzione che fa richiesta per cercare se un utente esiste
+                // const fetchUser = async () => {
+                //     try {
+                //         const response = await axios.get(`http://localhost:4000/api/user/getUser`, {
+                //             params: { username: usernameParam },
+                //         });
+
+                //         if(response.data.success){
+                //             setUserInfo({
+                //                 username: response.data.userData.username,
+                //                 name: response.data.userData.name,
+                //                 surname: response.data.userData.surname
+                //             });
+                //             setShowError({ value: false, message: '' });
+                //             setIsMyAccount(false);
+                //         }else{
+                //             setUserInfo(null);
+                //             setShowError({ value: true, message: response.data.message });
+                //             setIsMyAccount(false);
+                //         } 
+                //     } catch (error) {
+                //         console.error(error);
+                //         setShowError({ value: true, message: 'Errors occurred while retrieving the account' });
+                //         setUserInfo(null);
+                //         setIsMyAccount(false);
+                //     }
+                // };
+
+                // fetchUser();
+            /*}*/
         }
 
     }, [location.search]);

@@ -5,6 +5,7 @@ import { connectDB } from "./config/db.js"
 import authRoutes from './routes/authRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import bookRoutes from './routes/bookRoutes.js'
+import shelfRoutes from './routes/shelfRoutes.js'
 
 //app config
 const app = express()
@@ -21,6 +22,7 @@ connectDB();
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/book", bookRoutes);
+app.use("/api/shelf", shelfRoutes);
 
 //
 app.get("/", (req, res) => {

@@ -8,7 +8,7 @@ import useBook from '../../hooks/useBook'
 import ErrorPage from '../error/ErrorPage'
 
 const BookPage = () => {
-    const { bookInfo, showError, totalStars, averageStars} = useBook();
+    const { bookInfo, showError, totalStars, averageStars, handleAddBookToShelf} = useBook();
 
     if(showError.value){
         return(
@@ -29,8 +29,9 @@ const BookPage = () => {
                         <div className='d-flex justify-content-center'>
                             <Book imageUrl={bookInfo.cover}/>
                         </div>
-                        <div className='d-flex justify-content-center'>
-                            <button className='btn-t1'>Want to read</button>
+                        <div className='d-flex justify-content-center flex-column align-items-center gap-3'>
+                            <button className='btn-t1'  onClick={handleAddBookToShelf('read')}>Read</button>
+                            <button className='btn-t1' onClick={handleAddBookToShelf('to-read')}>Want to read</button>
                         </div>
                         <div className='d-flex flex-column align-items-center'>
                             <h6>Rate this book</h6>

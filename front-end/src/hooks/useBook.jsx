@@ -69,7 +69,23 @@ const useBook = () => {
         fetchBook();
     }, [location.search]);
 
-    return { bookInfo, showError, totalStars, averageStars };
+
+    const handleAddBookToShelf = async (type) => {
+        try {
+            const response = await axios.post('http://localhost:4000/api/shelf/addBookToShelf', {
+                userId : "", 
+                bookId : bookInfo.id_book,
+                type 
+            });
+            console.log(response.data.message); // Stampa il messaggio di successo
+        } catch (error) {
+            console.error('Error adding book to shelf:', error.response?.data?.error || error.message);
+        }
+    };
+
+
+
+    return { bookInfo, showError, totalStars, averageStars, handleAddBookToShelf };
 };
 
 export default useBook;

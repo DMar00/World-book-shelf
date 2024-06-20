@@ -80,9 +80,9 @@ export const login = async (req, res) => {
         //confronto se la password inserita e la password dell'utente nel db coincidono
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) 
-            return res.status(401).json({ 
+            return res.json({ 
                 success: false,
-                message: 'Credenziali non valide' 
+                message: 'invalid password' 
             });
       
         //    
