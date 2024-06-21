@@ -13,8 +13,29 @@ const useAccount = () => {
     const [showError, setShowError] = useState({ value: false, message: '' });
     const [isMyAccount, setIsMyAccount] = useState(false);
 
+    const [readBooks, setReadBooks] = useState([]);
+    const [toReadBooks, setToReadBooks] = useState([]);
+
     const location = useLocation();
     const navigate = useNavigate();
+
+    //funzione che mi restituisce l'elenco dei libri nelle due librerie dell'utente
+    const fetchUserShelfBooks = async () => {
+        console.log("username: " + user.username);
+        try {
+            const response = await axios.post('http://localhost:4000/api/shelf/getBooksByUserShelves', {
+                username: user.username
+            });
+            if (response.data.success) {
+                setReadBooks(response.data.books_read);
+                setToReadBooks(response.data.books_to_read);
+            } else {
+                console.error('Error fetching user books:', response.data.error);
+            }
+        } catch (error) {
+            console.error('Error fetching user books:', error);
+        }
+    };
     
     useEffect(() => {
         //prendo parametri da da url
@@ -95,49 +116,14 @@ const useAccount = () => {
                 };
 
                 fetchUser();
-                
-            } /*else {*/
-                
-                /*if(user)
-                    console.log('non sei '+ user.username);
-                */
-                //cerco se esiste quell'utente
-                //funzione che fa richiesta per cercare se un utente esiste
-                // const fetchUser = async () => {
-                //     try {
-                //         const response = await axios.get(`http://localhost:4000/api/user/getUser`, {
-                //             params: { username: usernameParam },
-                //         });
-
-                //         if(response.data.success){
-                //             setUserInfo({
-                //                 username: response.data.userData.username,
-                //                 name: response.data.userData.name,
-                //                 surname: response.data.userData.surname
-                //             });
-                //             setShowError({ value: false, message: '' });
-                //             setIsMyAccount(false);
-                //         }else{
-                //             setUserInfo(null);
-                //             setShowError({ value: true, message: response.data.message });
-                //             setIsMyAccount(false);
-                //         } 
-                //     } catch (error) {
-                //         console.error(error);
-                //         setShowError({ value: true, message: 'Errors occurred while retrieving the account' });
-                //         setUserInfo(null);
-                //         setIsMyAccount(false);
-                //     }
-                // };
-
-                // fetchUser();
-            /*}*/
+                fetchUserShelfBooks();
+            }
         }
 
     }, [location.search]);
 
 
-    return { userInfo, showError, isMyAccount }
+    return { userInfo, showError, isMyAccount, readBooks, toReadBooks }
 }
 
 export default useAccount

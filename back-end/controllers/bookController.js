@@ -152,8 +152,7 @@ export const addBookContinue = async (req, res) => {
 export const getBookById = async (req, res) => {
     //id in url query
     const { id_book } = req.query;
-    console.log(id_book)
-
+    
     //ricerco libro tramite id
     const existingBook = await bookModel.findOne({ id_book });
 
