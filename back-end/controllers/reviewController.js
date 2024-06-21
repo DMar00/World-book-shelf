@@ -25,7 +25,7 @@ export const saveReview = async (req, res) => {
         // Se esiste già una recensione dell'utente per questo libro
         if (existingReview) {
             // Controlla se la nuova valutazione è diversa da quella esistente
-            if (existingReview.rating !== rating) {
+            if (rating!=null && existingReview.rating !== rating) {
                 // Aggiorna la recensione con la nuova valutazione
                 existingReview.rating = rating;
                 const updatedReview = await existingReview.save();
@@ -36,9 +36,9 @@ export const saveReview = async (req, res) => {
                     message: 'Review updated successfully',
                     review: updatedReview
                 });
-            } else {
+            } else { //se è null rimuovi la recensione [comportamento predefinito in mui per Rating]
                 // Se la valutazione è la stessa, rimuovi la recensione
-                await existingReview.remove();
+                await reviewModel.deleteOne({ _id: existingReview._id });
 
                 return res.json({
                     success: true,
@@ -113,6 +113,3 @@ export const getUserRating = async (req, res) => {
         });
     }
 };
-
-
-export const banana = async(req, res)=>{}

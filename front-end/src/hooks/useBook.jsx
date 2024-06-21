@@ -39,7 +39,8 @@ const useBook = () => {
     // Funzione per gestire il cambio della valutazione
     const handleRatingChange = async (event , newValue) => {
         console.log("star value clicked: " + newValue);
-        if (newValue !== null) {
+        //se riclicco la stella verrà passato di defautl null, quindi i saveReview verifico se è null, allora elimina recensione
+        /*if (newValue !== null) {*/
             try {
                 const response = await axios.post('http://localhost:4000/api/review/saveReview', {
                     username: user.username,
@@ -58,7 +59,7 @@ const useBook = () => {
             } catch (error) {
                 console.error('Error saving review:', error.response?.data?.error || error.message);
             }
-        }
+        /*}*/
     };
 
 
