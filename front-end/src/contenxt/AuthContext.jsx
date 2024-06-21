@@ -41,7 +41,8 @@ export const AuthProvider = ({ children }) => {
 
         // Reindirizza alla pagina Account dopo il login
         const params = new URLSearchParams({ username });
-        navigate(`/account?${params.toString()}`);
+        //navigate(`/account?${params.toString()}`);
+        navigate(`/`);
     };
 
     const logout = () => {

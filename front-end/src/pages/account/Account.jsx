@@ -5,10 +5,11 @@ import useBook from '../../hooks/useBook'
 import ErrorPage from '../error/ErrorPage'
 import avatar from '../../assets/avatar.svg'
 import MiniBook from '../../components/mini-book/MiniBook'
+import {Rating} from '@mui/material'
 import './Account.css'
 
 const Account = () => {
-    const { userInfo, showError, isMyAccount, readBooks, toReadBooks} = useAccount();
+    const { userInfo, showError, isMyAccount, readBooks, toReadBooks, reviewedBooks} = useAccount();
 
 
     if(showError.value){
@@ -61,6 +62,36 @@ const Account = () => {
                                             {toReadBooks.map(book => (
                                                 <div key={book._id}>
                                                     <MiniBook image={book.cover} title={book.title} authors={book.authors} id={book.id_book}/>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </Row >
+                                <Row className='d-flex mt-5'>
+                                    <h3>My reviews</h3>
+                                    {reviewedBooks.length === 0 ? (
+                                        <div style={{ minHeight: '267.4px' }}>
+                                            <p>No books reviewed</p>
+                                        </div>
+                                    ) : (
+                                        <div className='d-flex flex-row gap-3'>
+                                            {reviewedBooks.map(reviewedBook => (
+                                                <div key={reviewedBook.book._id} className='d-flex flex-column align-items-center'>
+                                                    <div>
+                                                        <Rating 
+                                                            name="book-rating"
+                                                            value={reviewedBook.rating} 
+                                                            precision={1}
+                                                            size="small"
+                                                            readOnly 
+                                                        /> 
+                                                    </div>
+                                                    <MiniBook 
+                                                        image={reviewedBook.book.cover} 
+                                                        title={reviewedBook.book.title} 
+                                                        authors={reviewedBook.book.authors} 
+                                                        id={reviewedBook.book.id_book}
+                                                    />
                                                 </div>
                                             ))}
                                         </div>

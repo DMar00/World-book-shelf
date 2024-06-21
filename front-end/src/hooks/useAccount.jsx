@@ -15,6 +15,7 @@ const useAccount = () => {
 
     const [readBooks, setReadBooks] = useState([]);
     const [toReadBooks, setToReadBooks] = useState([]);
+    const [reviewedBooks, setReviewedBooks] = useState([]);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -30,12 +31,36 @@ const useAccount = () => {
                 setReadBooks(response.data.books_read);
                 setToReadBooks(response.data.books_to_read);
             } else {
+                setReadBooks([]);
+                setToReadBooks([]);
                 console.error('Error fetching user books:', response.data.error);
             }
         } catch (error) {
             console.error('Error fetching user books:', error);
         }
     };
+
+
+    //funzione che mi restituisce l'elenco dei libri recensiti dall'utente
+    const fetchUserReviewedBooks = async () => {
+        //console.log("username: " + user.username);
+        try {
+            const response = await axios.post('http://localhost:4000/api/review/getUserRatingBooks', {
+                username: user.username
+            });
+
+            if (response.data.success) {
+                setReviewedBooks(response.data.reviewedBooks);
+            } else {
+                setReviewedBooks([]);
+            }
+
+        } catch (error) {
+            console.error('Error fetching user books:', error);
+        }
+    };
+
+
     
     useEffect(() => {
         //prendo parametri da da url
@@ -117,13 +142,14 @@ const useAccount = () => {
 
                 fetchUser();
                 fetchUserShelfBooks();
+                fetchUserReviewedBooks();
             }
         }
 
     }, [location.search]);
 
 
-    return { userInfo, showError, isMyAccount, readBooks, toReadBooks }
+    return { userInfo, showError, isMyAccount, readBooks, toReadBooks, reviewedBooks }
 }
 
 export default useAccount

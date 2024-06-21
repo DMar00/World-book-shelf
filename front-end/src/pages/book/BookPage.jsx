@@ -8,7 +8,7 @@ import useBook from '../../hooks/useBook'
 import ErrorPage from '../error/ErrorPage'
 
 const BookPage = () => {
-    const { bookInfo, showError, totalStars, averageStars, currentShelf, handleAddBookToShelf, handleRatingChange, userRating} = useBook();
+    const { bookInfo, showError, totalStars, averageStars, currentShelf, handleAddBookToShelf, handleRatingChange, userRating, user} = useBook();
 
     if(showError.value){
         return(
@@ -29,25 +29,32 @@ const BookPage = () => {
                         <div className='d-flex justify-content-center'>
                             <Book imageUrl={bookInfo.cover}/>
                         </div>
-                        <div className='d-flex justify-content-center flex-column align-items-center gap-3'>
-                            <button 
-                                className='btn-t1'
-                                style={{ backgroundColor: currentShelf === 'read' ? '#8841CB' : '#808080' }}
-                                onClick={() =>handleAddBookToShelf('read')}>Read</button>
-                            <button 
-                                className='btn-t1' 
-                                style={{ backgroundColor: currentShelf === 'to-read' ? '#8841CB' : '#808080' }}
-                                onClick={() =>handleAddBookToShelf('to-read')}>Want to read</button>
+
+                        {user != null ? 
+                        <div>
+                            <div className='d-flex justify-content-center flex-column align-items-center gap-3'>
+                                <button 
+                                    className='btn-t1'
+                                    style={{ backgroundColor: currentShelf === 'read' ? '#8841CB' : '#808080' }}
+                                    onClick={() =>handleAddBookToShelf('read')}>Read</button>
+                                <button 
+                                    className='btn-t1' 
+                                    style={{ backgroundColor: currentShelf === 'to-read' ? '#8841CB' : '#808080' }}
+                                    onClick={() =>handleAddBookToShelf('to-read')}>Want to read</button>
+                            </div>
+                            <div className='d-flex flex-column align-items-center'>
+                                <h6>Rate this book</h6>
+                                <Rating 
+                                    name="book-rating" 
+                                    value={userRating} 
+                                    precision={1}
+                                    size="large"
+                                    onChange={handleRatingChange}/>
+                            </div>
                         </div>
-                        <div className='d-flex flex-column align-items-center'>
-                            <h6>Rate this book</h6>
-                            <Rating 
-                                name="book-rating" 
-                                value={userRating} 
-                                precision={1}
-                                size="large"
-                                onChange={handleRatingChange}/>
-                        </div>
+                        : 
+                        <div></div>
+                        }
                     </Row>
                 </Col>
                 <Col lg={9} sm={12}>

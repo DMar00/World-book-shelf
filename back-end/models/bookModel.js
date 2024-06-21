@@ -16,7 +16,7 @@ const bookSchema = new mongoose.Schema({
     number_stars_3: { type: Number, default: 0 }, 
     number_stars_4: { type: Number, default: 0 }, 
     number_stars_5: { type: Number, default: 0 }, 
-    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'review' }] 
+    //reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'review' }] 
 })
 
 const bookModel = mongoose.models.book || mongoose.model("book", bookSchema);

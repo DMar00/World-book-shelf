@@ -167,7 +167,7 @@ const useBook = () => {
     }, [location.search]);
 
 
-    return { bookInfo, showError, totalStars, averageStars, currentShelf, handleAddBookToShelf, handleRatingChange, userRating};
+    return { bookInfo, showError, totalStars, averageStars, currentShelf, handleAddBookToShelf, handleRatingChange, userRating, user};
 };
 
 export default useBook;
