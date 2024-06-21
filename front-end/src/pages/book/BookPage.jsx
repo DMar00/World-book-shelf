@@ -8,7 +8,7 @@ import useBook from '../../hooks/useBook'
 import ErrorPage from '../error/ErrorPage'
 
 const BookPage = () => {
-    const { bookInfo, showError, totalStars, averageStars, currentShelf, handleAddBookToShelf} = useBook();
+    const { bookInfo, showError, totalStars, averageStars, currentShelf, handleAddBookToShelf, handleRatingChange, userRating} = useBook();
 
     if(showError.value){
         return(
@@ -43,9 +43,10 @@ const BookPage = () => {
                             <h6>Rate this book</h6>
                             <Rating 
                                 name="book-rating" 
-                                value={0} 
+                                value={userRating} 
                                 precision={1}
-                                size="large"/>
+                                size="large"
+                                onChange={handleRatingChange}/>
                         </div>
                     </Row>
                 </Col>

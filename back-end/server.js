@@ -6,6 +6,7 @@ import authRoutes from './routes/authRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import bookRoutes from './routes/bookRoutes.js'
 import shelfRoutes from './routes/shelfRoutes.js'
+import reviewRoutes from './routes/reviewRoutes.js'
 
 //app config
 const app = express()
@@ -23,6 +24,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/book", bookRoutes);
 app.use("/api/shelf", shelfRoutes);
+app.use("/api/review", reviewRoutes);
 
 //
 app.get("/", (req, res) => {
