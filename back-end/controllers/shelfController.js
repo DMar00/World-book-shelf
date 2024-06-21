@@ -5,7 +5,7 @@ import UserModel from '../models/userModel.js';
 export const addBookToShelf = async (req, res) => {
     const { username, id_book, type } = req.body;
     //id_book è id goodreads non id mongo
-    console.log("username: " + username + " - id_book:" + id_book + " - type: " + type);
+    //console.log("username: " + username + " - id_book:" + id_book + " - type: " + type);
 
     try {
         // Trova l'utente basato sullo username

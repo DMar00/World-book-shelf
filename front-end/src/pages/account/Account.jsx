@@ -36,23 +36,35 @@ const Account = () => {
                                 </Row>
                                 <Row className='d-flex flex-wrap'>
                                         <h3>Read</h3>
-                                        <div className='d-flex flex-row gap-3 flex-wrap'>
-                                            {readBooks.map(book => (
+                                        {readBooks.length === 0 ? (
+                                            <div style={{ minHeight: '267.4px' }}>
+                                                <p>No books saved in this shelf</p>
+                                            </div>
+                                        ) : (
+                                            <div className='d-flex flex-row gap-3'>
+                                                {readBooks.map(book => (
+                                                    <div key={book._id}>
+                                                        <MiniBook image={book.cover} title={book.title} authors={book.authors} id={book.id_book}/>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                </Row>
+                                <Row className='d-flex mt-5'>
+                                    <h3>Want to read</h3>
+                                    {toReadBooks.length === 0 ? (
+                                        <div style={{ minHeight: '267.4px' }}>
+                                            <p>No books saved in this shelf</p>
+                                        </div>
+                                    ) : (
+                                        <div className='d-flex flex-row gap-3'>
+                                            {toReadBooks.map(book => (
                                                 <div key={book._id}>
                                                     <MiniBook image={book.cover} title={book.title} authors={book.authors} id={book.id_book}/>
                                                 </div>
                                             ))}
                                         </div>
-                                </Row>
-                                <Row className='d-flex mt-5'>
-                                    <h3>Want to read</h3>
-                                    <div className='d-flex flex-row gap-3'>
-                                        {toReadBooks.map(book => (
-                                            <div key={book._id}>
-                                                <MiniBook image={book.cover} title={book.title} authors={book.authors} id={book.id_book}/>
-                                            </div>
-                                        ))}
-                                    </div>
+                                    )}
                                 </Row>
                             </Col>
                         </Row>
