@@ -1,4 +1,6 @@
 import bookModel from '../models/bookModel.js';
+import UserModel from '../models/userModel.js';
+import shelfModel from '../models/shelfModel.js';
 import axios from 'axios';
 
 export const addBook = async (req, res) => {
@@ -258,3 +260,111 @@ export const topRatingBooks = async (req, res) => {
         });
     }
 }
+
+//funzione nella home page utente loggato
+export const topRatingBooksBasedOnUserShelves = async (req, res) => {
+    const { username } = req.body;
+
+    try {
+        // Trova l'utente basato sullo username
+        const user = await UserModel.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+
+        // Trova le shelf dell'utente
+        const shelves = await shelfModel.find({ user: user._id });
+
+        // Ottieni tutti i generi dei libri presenti nelle shelf dell'utente
+        let genres = [];
+
+        shelves.forEach(shelf => {
+            // Aggiungi i generi dei libri in books_read
+            shelf.books_read.forEach(book => {
+                genres = genres.concat(book.genres);
+            });
+
+            // Aggiungi i generi dei libri in books_to_read
+            shelf.books_to_read.forEach(book => {
+                genres = genres.concat(book.genres);
+            });
+        });
+
+        // Rimuovi i duplicati dai generi
+        genres = [...new Set(genres)];
+
+        // Trova i libri che hanno almeno uno dei generi trovati nelle shelf dell'utente
+        const books = await bookModel.aggregate([
+            {
+                $match: { genres: { $in: genres } }
+            },
+            {
+                $addFields: {
+                    totalReviews: {
+                        $add: ["$number_stars_1", "$number_stars_2", "$number_stars_3", "$number_stars_4", "$number_stars_5"]
+                    }
+                }
+            },
+            {
+                $addFields: {
+                    averageRating: {
+                        $cond: {
+                            if: { $eq: ["$totalReviews", 0] },
+                            then: 0,
+                            else: {
+                                $divide: [
+                                    {
+                                        $add: [
+                                            { $multiply: ["$number_stars_1", 1] },
+                                            { $multiply: ["$number_stars_2", 2] },
+                                            { $multiply: ["$number_stars_3", 3] },
+                                            { $multiply: ["$number_stars_4", 4] },
+                                            { $multiply: ["$number_stars_5", 5] }
+                                        ]
+                                    },
+                                    "$totalReviews"
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    id_book: 1,
+                    title: 1,
+                    authors: 1,
+                    cover: 1,
+                    totalReviews: 1,
+                    averageRating: 1
+                }
+            },
+            {
+                $sort: { averageRating: -1 }  // Ordina per la media della valutazione in ordine decrescente
+            },
+            {
+                $limit: 10  // Limita il risultato ai primi 10 libri
+            }
+        ]);
+
+        if (books.length > 0) {
+            return res.json({
+                success: true,
+                message: 'Top 10 books sorted by highest rating based on user shelves genres',
+                books: books
+            });
+        } else {
+            return res.json({
+                success: false,
+                message: 'No books found based on user shelves genres'
+            });
+        }
+    } catch (error) {
+        console.error('Error while fetching top rated books based on user shelves genres:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error while fetching top rated books based on user shelves genres'
+        });
+    }
+};
+
