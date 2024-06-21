@@ -30,8 +30,8 @@ const BookPage = () => {
                             <Book imageUrl={bookInfo.cover}/>
                         </div>
                         <div className='d-flex justify-content-center flex-column align-items-center gap-3'>
-                            <button className='btn-t1'  onClick={handleAddBookToShelf('read')}>Read</button>
-                            <button className='btn-t1' onClick={handleAddBookToShelf('to-read')}>Want to read</button>
+                            <button className='btn-t1'  onClick={() =>handleAddBookToShelf('read')}>Read</button>
+                            <button className='btn-t1' onClick={() =>handleAddBookToShelf('to-read')}>Want to read</button>
                         </div>
                         <div className='d-flex flex-column align-items-center'>
                             <h6>Rate this book</h6>

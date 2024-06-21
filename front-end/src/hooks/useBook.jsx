@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import { useAuth } from '../contenxt/AuthContext'
+import axios from 'axios'
 
 const useBook = () => {
     const [bookInfo, setBookInfo] = useState(null);
@@ -8,6 +9,24 @@ const useBook = () => {
     const [averageStars, setAverageStars] = useState(0);
     const [showError, setShowError] = useState({ value: false, message: '' });
     const location = useLocation();
+
+    //dati da localstorage
+    const { user } = useAuth();
+
+    //funzione per aggiungere libro a libreria
+    const handleAddBookToShelf = async (type) => {
+        console.log("username: " + user.username + " - id_book:" + bookInfo.id_book + " - type: " + type);
+        try {
+            const response = await axios.post('http://localhost:4000/api/shelf/addBookToShelf', {
+                username : user.username, 
+                id_book : bookInfo.id_book,
+                type 
+            });
+            alert(response.data.message);
+        } catch (error) {
+            console.error('Error adding book to shelf:', error.response?.data?.error || error.message);
+        }
+    };
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -68,21 +87,6 @@ const useBook = () => {
 
         fetchBook();
     }, [location.search]);
-
-
-    const handleAddBookToShelf = async (type) => {
-        try {
-            const response = await axios.post('http://localhost:4000/api/shelf/addBookToShelf', {
-                userId : "", 
-                bookId : bookInfo.id_book,
-                type 
-            });
-            console.log(response.data.message); // Stampa il messaggio di successo
-        } catch (error) {
-            console.error('Error adding book to shelf:', error.response?.data?.error || error.message);
-        }
-    };
-
 
 
     return { bookInfo, showError, totalStars, averageStars, handleAddBookToShelf };
