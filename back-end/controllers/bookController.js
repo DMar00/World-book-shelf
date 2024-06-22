@@ -273,22 +273,39 @@ export const topRatingBooksBasedOnUserShelves = async (req, res) => {
         }
 
         // Trova le shelf dell'utente
-        const shelves = await shelfModel.find({ user: user._id });
+        const shelves = await shelfModel.findOne({ user: user._id });
 
         // Ottieni tutti i generi dei libri presenti nelle shelf dell'utente
         let genres = [];
 
-        shelves.forEach(shelf => {
+        // Trova i libri nelle due mensole dell'utente
+        const readBooks = await bookModel.find({ _id: { $in: shelves.books_read } });
+        const toReadBooks = await bookModel.find({ _id: { $in: shelves.books_to_read } });
+
+        //Concateno i generi dei libri trovati
+        readBooks.forEach(book => {
+            genres = genres.concat(book.genres);
+            console.log("genres books_read: "  + genres);
+        });
+
+        toReadBooks.forEach(book => {
+            genres = genres.concat(book.genres);
+            console.log("genres books_to_read: "  + genres);
+        });
+
+        /*shelves.forEach(shelf => {
             // Aggiungi i generi dei libri in books_read
             shelf.books_read.forEach(book => {
                 genres = genres.concat(book.genres);
+                console.log("genres books_read: "  + genres);
             });
-
+            console.log("man in the middle");
             // Aggiungi i generi dei libri in books_to_read
             shelf.books_to_read.forEach(book => {
                 genres = genres.concat(book.genres);
+                console.log("genres books_to_read: "  + genres);
             });
-        });
+        });*/
 
         // Rimuovi i duplicati dai generi
         genres = [...new Set(genres)];
