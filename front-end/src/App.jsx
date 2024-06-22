@@ -7,10 +7,12 @@ import Signup from './pages/signup/Signup'
 import NavBar from './components/navbar/NavBar'
 import Footer from './components/footer/Footer'
 import BookPage from './pages/book/BookPage'
+import SearchPage from './pages/search/SearchPage'
 import './App.css'
 import './css/input.css'
 import './css/buttons.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
         <Route exact path='/signup' element={<Signup/>}/>
         <Route exact path='/account' element={<Account/>}/>
         <Route exact path='/book' element={<BookPage/>}/>
+        <Route exact path='/search' element={<SearchPage/>}/>
       </Routes>
       <Footer/>
     </div>

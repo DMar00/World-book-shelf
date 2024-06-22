@@ -15,12 +15,17 @@ const useQueryBooks = () => {
         const getTopRatingBooksBasedOnUserShelves = async (username) => {
             try {
                 const response = await axios.post('http://localhost:4000/api/book/topRatingBooksBasedOnUserShelves', { username });
-                console.log("success: " + response.data.success);
+                //console.log("success: " + response.data.success);
                 if(response.data.success)
                     setBooksFound(response.data.books);
-                else
-                    setBooksFound([]);
-
+                else{
+                    const response2 = await axios.post('http://localhost:4000/api/book/topRatingBooks');
+                    if(response2.data.success)
+                        setBooksFound(response2.data.books);
+                    else
+                        setBooksFound([]);
+                }
+                    
             } catch (error) {
                 console.error('Error fetching top rating books based on user shelves:', error);
                 return { success: false, message: 'Error fetching data' };

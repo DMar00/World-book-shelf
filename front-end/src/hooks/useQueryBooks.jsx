@@ -9,7 +9,7 @@ const useQueryBooks = () => {
     useEffect(() => {
         const fetchTopRatedBooks = async () => {
             try {
-                const response = await axios.get('http://localhost:4000/api/book/topRatingBooks');
+                const response = await axios.post('http://localhost:4000/api/book/topRatingBooks');
                 if (response.data.success) {
                     setTopRatedBooks(response.data.books);
                 } else {

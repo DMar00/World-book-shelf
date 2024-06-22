@@ -30,7 +30,7 @@ const Home = () => {
                 </Row>
                 <hr/>
                 <Row className='d-flex align-items-center justify-content-center text-center mt-5'>
-                    <h5>Top 5 books reviewed</h5>
+                    <h4 style={{fontWeight:'600'}}>Top 10 books reviewed</h4>
                     <div className='d-flex flex-row gap-4 flex-wrap justify-content-center mt-4'>
                         {topRatedBooks.map(book => (
                             <div key={book._id}>

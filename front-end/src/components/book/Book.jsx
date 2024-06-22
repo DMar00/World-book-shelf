@@ -3,8 +3,6 @@ import noPhoto from '../../assets/no_photo.avif';
 import './Book.css';
 
 const Book = ({ imageUrl }) => {
-  console.log("imageurl: " + imageUrl);
-
   return (
     <div 
       className='book' 

@@ -236,14 +236,14 @@ export const topRatingBooks = async (req, res) => {
                 $sort: { averageRating: -1 }  // Ordina per la media della valutazione in ordine decrescente
             },
             {
-                $limit: 5  // Limita il risultato ai primi 5 libri
+                $limit: 10  // Limita il risultato ai primi 5 libri
             }
         ]);
 
         if (books.length > 0) {
             return res.json({
                 success: true,
-                message: 'Top 5 books sorted by highest rating',
+                message: 'Top 10 books sorted by highest rating',
                 books: books
             });
         } else {
@@ -282,6 +282,13 @@ export const topRatingBooksBasedOnUserShelves = async (req, res) => {
         const readBooks = await bookModel.find({ _id: { $in: shelves.books_read } });
         const toReadBooks = await bookModel.find({ _id: { $in: shelves.books_to_read } });
 
+        if(readBooks.length + toReadBooks.length === 0){
+            return res.json({
+                success: false,
+                message: 'No books found in user shelves'
+            });
+        }
+
         //Concateno i generi dei libri trovati
         readBooks.forEach(book => {
             genres = genres.concat(book.genres);
@@ -292,20 +299,6 @@ export const topRatingBooksBasedOnUserShelves = async (req, res) => {
             genres = genres.concat(book.genres);
             console.log("genres books_to_read: "  + genres);
         });
-
-        /*shelves.forEach(shelf => {
-            // Aggiungi i generi dei libri in books_read
-            shelf.books_read.forEach(book => {
-                genres = genres.concat(book.genres);
-                console.log("genres books_read: "  + genres);
-            });
-            console.log("man in the middle");
-            // Aggiungi i generi dei libri in books_to_read
-            shelf.books_to_read.forEach(book => {
-                genres = genres.concat(book.genres);
-                console.log("genres books_to_read: "  + genres);
-            });
-        });*/
 
         // Rimuovi i duplicati dai generi
         genres = [...new Set(genres)];
@@ -381,6 +374,46 @@ export const topRatingBooksBasedOnUserShelves = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: 'Error while fetching top rated books based on user shelves genres'
+        });
+    }
+};
+
+
+export const searchBooks = async (req, res) => {
+    const { query, page = 1, limit = 15 } = req.query;
+
+    try {
+        const skip = (page - 1) * limit;
+
+        const books = await bookModel.find({ 
+            title: { $regex: query, $options: 'i' }  // 'i' per rendere la ricerca case-insensitive
+        }).skip(skip)
+        .limit(limit);
+
+        // Conta il totale dei libri che corrispondono alla query
+        const totalBooks = await bookModel.countDocuments({
+            title: { $regex: query, $options: 'i' }
+        });
+
+        if (books.length > 0) {
+            return res.json({
+                success: true,
+                books,
+                totalBooks,
+                totalPages: Math.ceil(totalBooks / limit),
+                currentPage: parseInt(page)
+            });
+        } else {
+            return res.json({
+                success: false,
+                message: 'No books found'
+            });
+        }
+    } catch (error) {
+        console.error('Error while searching for books:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error while searching for books'
         });
     }
 };
