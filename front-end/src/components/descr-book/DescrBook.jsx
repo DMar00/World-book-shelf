@@ -16,8 +16,8 @@ const DescrBook = ({image, title, authors, id, descr}) => {
                 <Book imageUrl={image} className="mini-book-image"/>
                 
                 <div className='d-flex flex-column align-items-start'>
-                    <span>{title}</span>
-                    <span>{authors}</span>
+                    <span className='descr-book-title'>{title}</span>
+                    <span className='descr-book-author'>{authors}</span>
                     <span className='descr-book-plot'>{descr}</span>
                     <button className='btn-t1 mt-2' onClick={handleButtonClick}>Show</button>
                 </div>

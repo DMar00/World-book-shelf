@@ -1,12 +1,40 @@
 .descr-book .book {
+    margin-right: 20px;
     height: 187.2px;
     width: 124.8px;
 }
 
+.descr-book {
+    height: 187.2px;
+    margin-bottom: 10px;
+}
+
+.descr-book span {
+    margin-bottom: 10px;
+}
+
+.descr-book-title {
+    font-weight: bold;
+}
+
+.descr-book-author {
+    font-weight: lighter;
+}
+
 .descr-book-plot{
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    
-    max-width: 500px;
+    max-width: 700px;
+    text-align: left;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+.btn-t1 {
+    display: block;
+    margin: auto 0 0; 
+    flex: 1; 
 }
