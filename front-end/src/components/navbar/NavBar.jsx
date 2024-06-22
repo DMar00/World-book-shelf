@@ -13,7 +13,10 @@ const NavBar = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate('/search?query='+input, { state: { query : input } });
+        //se non inserisco nulla nella barra di ricerca non fa nulla
+        if (input.trim() !== '') {
+            navigate('/search?query='+input, { state: { query : input } });
+        }
     };
 
     return (

@@ -380,35 +380,49 @@ export const topRatingBooksBasedOnUserShelves = async (req, res) => {
 
 
 export const searchBooks = async (req, res) => {
-    const { query, page = 1, limit = 15 } = req.query;
+    const { query, page = 1, limit = 15, orderBy } = req.query;
 
     try {
         const skip = (page - 1) * limit;
 
+        let sortCriteria = {};
+        if (orderBy === 'title') {
+            sortCriteria = { title: 1 }; // Ordina per titolo in ordine crescente
+        } else if (orderBy === 'author') {
+            sortCriteria = { authors: 1 }; // Ordina per autore in ordine crescente
+        } else if (orderBy === 'pages') {
+            sortCriteria = { pages: 1 }; // Ordina per numero di pagine in ordine crescente
+        } else {
+            // Gestione di default per altri casi di ordinamento
+            sortCriteria = { title: 1 }; // Ordine per titolo di default
+        }
+
         const books = await bookModel.find({ 
             title: { $regex: query, $options: 'i' }  // 'i' per rendere la ricerca case-insensitive
         }).skip(skip)
-        .limit(limit);
+        .limit(limit)
+        .sort(sortCriteria); // Applica il criterio di ordinamento;
 
         // Conta il totale dei libri che corrispondono alla query
         const totalBooks = await bookModel.countDocuments({
             title: { $regex: query, $options: 'i' }
         });
 
-        if (books.length > 0) {
+        console.log("libri trovati per [" + query + "] : "+ books.length );
+        /*if (books.length > 0) {*/
             return res.json({
                 success: true,
                 books,
                 totalBooks,
                 totalPages: Math.ceil(totalBooks / limit),
                 currentPage: parseInt(page)
-            });
+            });/*
         } else {
             return res.json({
                 success: false,
                 message: 'No books found'
             });
-        }
+        }*/
     } catch (error) {
         console.error('Error while searching for books:', error);
         return res.status(500).json({

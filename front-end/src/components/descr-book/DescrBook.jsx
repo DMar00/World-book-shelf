@@ -15,13 +15,14 @@ const DescrBook = ({image, title, authors, id, descr}) => {
             <div className='d-flex descr-book'>
                 <Book imageUrl={image} className="mini-book-image"/>
                 
-                <div className='d-flex flex-column align-items-start'>
+                <div className='d-flex flex-column align-items-start descr-book-content' >
                     <span className='descr-book-title'>{title}</span>
-                    <span className='descr-book-author'>{authors}</span>
-                    <span className='descr-book-plot'>{descr}</span>
-                    <button className='btn-t1 mt-2' onClick={handleButtonClick}>Show</button>
+                    <span className='descr-book-author mb-2'>{authors}</span>
+                    <span className='descr-book-plot mb-2'>{descr}</span>
+                    <div className='d-flex align-items-end justify-content-end flex-grow-1'>
+                        <button className='btn-t1 mt-2 align-self-end' onClick={handleButtonClick}>Show</button>
+                    </div>
                 </div>
-
             </div>
         </div>
     )

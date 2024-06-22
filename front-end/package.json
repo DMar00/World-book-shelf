@@ -19,12 +19,14 @@
     "@mui/material": "^5.15.19",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
+    "query-string": "^9.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
     "react-paginate": "^8.2.0",
     "react-rating": "^2.0.5",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "react-select": "^5.8.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

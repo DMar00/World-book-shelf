@@ -2,6 +2,8 @@
     margin-right: 20px;
     height: 187.2px;
     width: 124.8px;
+    min-height: 187.2px;
+    min-width: 124.8px;
 }
 
 .descr-book {
@@ -10,7 +12,11 @@
 }
 
 .descr-book span {
-    margin-bottom: 10px;
+   /* margin-bottom: 10px;*/
+}
+
+.descr-book-content{
+    width: 100%;
 }
 
 .descr-book-title {
@@ -23,7 +29,7 @@
 
 .descr-book-plot{
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -34,7 +40,8 @@
 }
 
 .btn-t1 {
-    display: block;
-    margin: auto 0 0; 
-    flex: 1; 
+    /*display: block;*/
+    margin-top: auto; 
+
+    /*flex: 1; */
 }
