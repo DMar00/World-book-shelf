@@ -2,76 +2,6 @@ import reviewModel from '../models/reviewModel.js';
 import bookModel from '../models/bookModel.js';
 import UserModel from '../models/userModel.js';
 
-// Funzione per salvare una recensione nel database
-/*export const saveReview = async (req, res) => {
-    const { username, id_book, rating } = req.body;
-
-    try {
-        // Trova l'utente basato sullo username
-        const user = await UserModel.findOne({ username });
-        if (!user) {
-            return res.status(404).json({ success: false, error: 'User not found' });
-        }
-
-        // Verifica se il libro esiste
-        const book = await bookModel.findOne({ id_book });
-        if (!book) {
-            return res.json({ success: false, error: 'Book not found' });
-        }
-
-        // Verifica se l'utente ha già recensito questo libro
-        let existingReview = await reviewModel.findOne({ user: user._id, book: book._id });
-
-        // Se esiste già una recensione dell'utente per questo libro
-        if (existingReview) {
-            // Controlla se la nuova valutazione è diversa da quella esistente
-            if (rating!=null && existingReview.rating !== rating) {
-                // Aggiorna la recensione con la nuova valutazione
-                existingReview.rating = rating;
-                const updatedReview = await existingReview.save();
-
-                return res.json({
-                    success: true,
-                    removed: false,
-                    message: 'Review updated successfully',
-                    review: updatedReview
-                });
-            } else { //se è null rimuovi la recensione [comportamento predefinito in mui per Rating]
-                // Se la valutazione è la stessa, rimuovi la recensione
-                await reviewModel.deleteOne({ _id: existingReview._id });
-
-                return res.json({
-                    success: true,
-                    removed: true,
-                    message: 'Review removed successfully'
-                });
-            }
-        } else {
-            // Se l'utente non ha ancora recensito questo libro, crea una nuova recensione
-            const newReview = new reviewModel({
-                user: user._id,
-                book: book._id,
-                rating
-            });
-
-            const savedReview = await newReview.save();
-
-            return res.json({
-                success: true,
-                removed: false,
-                message: 'Review saved successfully',
-                review: savedReview
-            });
-        }
-    } catch (error) {
-        console.error('Error saving/retrieving review:', error);
-        return res.status(500).json({
-            success: false,
-            error: 'Internal server error'
-        });
-    }
-};*/
-
 export const saveReview = async (req, res) => {
     const { username, id_book, rating } = req.body;
 
@@ -125,7 +55,7 @@ export const saveReview = async (req, res) => {
                     message: 'Review removed successfully'
                 });
             } else {
-                // Se la valutazione è la stessa, non fare nulla
+                //non fa nulla in altri casi
                 return res.json({
                     success: true,
                     removed: false,
@@ -221,21 +151,6 @@ export const getUserRatingBooks = async (req, res) => {
         if (userReviews.length === 0) {
             return res.json({ success: false });
         }
-
-        /*// Estrai gli ID unici dei libri dalle recensioni
-        const bookIds = userReviews.map(review => review.book);
-
-        // Trova i dettagli dei libri basati sugli ID estratti
-        const reviewedBooks = await bookModel.find({ _id: { $in: bookIds } });
-
-        // Aggiungi il valore della recensione a ciascun libro nell'array reviewedBooks
-        for (let i = 0; i < userReviews.length; i++) {
-            const review = userReviews[i];
-            const bookIndex = reviewedBooks.findIndex(b => b._id.toString() === review.book.toString());
-            if (bookIndex !== -1) {
-                reviewedBooks[bookIndex].rating = review.rating;
-            }
-        }*/
 
         // Trova tutti i libri recensiti dall'utente e ottieni i dettagli completi
         const reviewedBooks = await Promise.all(userReviews.map(async (review) => {

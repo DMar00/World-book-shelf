@@ -58,7 +58,7 @@ const BookPage = () => {
                     </Row>
                 </Col>
                 <Col lg={9} sm={12}>
-                    <h2>{bookInfo.title}</h2>
+                    <h2 className='book-title'>{bookInfo.title}</h2>
                     <h4>{bookInfo.authors}</h4>
                     <div className='rating-bar d-flex flex-row align-items-center gap-3'>
                         <Rating 
@@ -76,6 +76,26 @@ const BookPage = () => {
                         <h6>Genres:</h6>
                         <TagList list={bookInfo.genres}/>
                     </div>
+                    
+                    <div className='d-flex flex-row gap-5'>
+                        <div className='mt-3'>
+                            <h6>Publish Info: </h6>
+                            <span>{bookInfo.publisher}, {bookInfo.publish_year}</span>
+                        </div>
+
+                        <div className='mt-3'>
+                            <h6>Language: </h6>
+                            <span>{bookInfo.language}</span>
+                        </div>
+
+                        <div className='mt-3'>
+                            <h6>Pages: </h6>
+                            <span>{bookInfo.pages_number}</span>
+                        </div>
+
+                    </div>
+                    
+
                     <hr/>
                     <div className='community-reviews'>
                         <div className='d-flex flex-column align-items-center mb-3'>

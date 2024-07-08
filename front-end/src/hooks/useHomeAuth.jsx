@@ -16,14 +16,19 @@ const useQueryBooks = () => {
             try {
                 const response = await axios.post('http://localhost:4000/api/book/topRatingBooksBasedOnUserShelves', { username });
                 //console.log("success: " + response.data.success);
-                if(response.data.success)
+                if(response.data.success){
                     setBooksFound(response.data.books);
-                else{
+                    console.log("a");
+                }else{
+                    console.log("e");
                     const response2 = await axios.post('http://localhost:4000/api/book/topRatingBooks');
-                    if(response2.data.success)
+                    if(response2.data.success){
+                        console.log("b");
                         setBooksFound(response2.data.books);
-                    else
+                    }else{
+                        console.log("c");
                         setBooksFound([]);
+                    }   
                 }
                     
             } catch (error) {

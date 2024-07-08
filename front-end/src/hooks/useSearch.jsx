@@ -6,9 +6,10 @@ const useSearch = () => {
     const [searchResults, setSearchResults] = useState([]);
     const navigate = useNavigate();
 
-    const searchBooks = async (query, page = 1, orderBy ,limit = 15) => {
+//page = 1 di default
+const searchBooks = async (query, page = 1, orderBy) => {
         try {
-            const response = await axios.get('http://localhost:4000/api/book/search', { params: { query, page, limit, orderBy } });
+            const response = await axios.get('http://localhost:4000/api/book/search', { params: { query, page, orderBy } });
             return response.data;
         } catch (error) {
             console.error('Error searching books:', error);
@@ -16,10 +17,7 @@ const useSearch = () => {
         }
     };
 
-    return {
-        searchBooks,
-        searchResults,
-    };
+    return { searchBooks };
 };
 
 export default useSearch;

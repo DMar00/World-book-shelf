@@ -6,25 +6,16 @@
     min-width: 124.8px;
 }
 
-.descr-book {
-    height: 187.2px;
-    margin-bottom: 10px;
-}
-
-.descr-book span {
-   /* margin-bottom: 10px;*/
-}
-
-.descr-book-content{
-    width: 100%;
-}
-
 .descr-book-title {
     font-weight: bold;
-}
-
-.descr-book-author {
-    font-weight: lighter;
+    color: #8741CA;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 700px;
+    text-align: left;
 }
 
 .descr-book-plot{
@@ -35,13 +26,10 @@
     text-overflow: ellipsis;
     max-width: 700px;
     text-align: left;
-    line-height: 1.5;
-    margin-top: 10px;
+    font-size: 10pt;
+    margin-top: 5px;
 }
 
-.btn-t1 {
-    /*display: block;*/
-    margin-top: auto; 
-
-    /*flex: 1; */
+.descr-book-author {
+    font-weight: bold;
 }

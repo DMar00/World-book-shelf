@@ -1,7 +1,5 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import UserModel from '../models/userModel.js';
-import { secret } from '../config/jwt.js';
 
 
 export const signup = async (req, res) => {
@@ -26,10 +24,6 @@ export const signup = async (req, res) => {
             });
         }
     
-        // Hash della password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-    
         // Creazione di un nuovo utente nel database
         const newUser = new UserModel({
             username,
@@ -42,13 +36,9 @@ export const signup = async (req, res) => {
 
         await newUser.save();
     
-        // Generazione del token JWT
-        const token = jwt.sign({_id: newUser._id}, secret, { expiresIn: '9d' });
-    
         res.json({ 
             success: true,
-            message:'User Added',
-            token 
+            message:'User Added'
         });
 
     } catch (error) {
@@ -59,8 +49,6 @@ export const signup = async (req, res) => {
         });
     }
 };
-
-
 
 export const login = async (req, res) => {
     //username e password inseriti nel form
@@ -85,14 +73,11 @@ export const login = async (req, res) => {
                 message: 'invalid password' 
             });
       
-        //    
-        //console.log("secret: "+ secret);
-        const token = jwt.sign({_id: user._id}, secret, { expiresIn: '9d' });
         res.json({ 
             success: true,
-            message: '',
-            token 
+            message: ''
         });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ 

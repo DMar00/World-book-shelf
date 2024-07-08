@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema({
     date: {type: String, required: true},
     email : {type: String, required: true, unique:true},
     password : {type: String, required: true},
-    //reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'review' }]
 })
 
 //middleware pre save

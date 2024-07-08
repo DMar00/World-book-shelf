@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAuth } from '../../contenxt/AuthContext'
-import { Container, Row } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import './Home.css'
 import bookLover from '../../assets/book-lover-animate.svg'
 import HomeAuth from './HomeAuth'
@@ -31,13 +31,20 @@ const Home = () => {
                 <hr/>
                 <Row className='d-flex align-items-center justify-content-center text-center mt-5'>
                     <h4 style={{fontWeight:'600'}}>Top 10 books reviewed</h4>
-                    <div className='d-flex flex-row gap-4 flex-wrap justify-content-center mt-4'>
-                        {topRatedBooks.map(book => (
-                            <div key={book._id}>
-                                <MiniBook image={book.cover} title={book.title} authors={book.authors} id={book.id_book}/>
-                            </div>
-                        ))}
-                    </div>
+
+                    <Col sm={7}>
+                        <div className='d-flex flex-row gap-4 flex-wrap justify-content-center mt-4'>
+                            {topRatedBooks.map(book => (
+                                <div key={book._id}>
+                                    <MiniBook image={book.cover} title={book.title} authors={book.authors} id={book.id_book}/>
+                                </div>
+                            ))}
+                        </div>
+                    </Col>
+
+
+                    
+
                 </Row>
             </Container>
         </div>

@@ -3,7 +3,56 @@ import UserModel from '../models/userModel.js';
 import shelfModel from '../models/shelfModel.js';
 import axios from 'axios';
 
+const getTopRatingBooksAggregationPipeline = () => [
+    {
+        $addFields: {
+            totalReviews: {
+                $add: ["$number_stars_1", "$number_stars_2", "$number_stars_3", "$number_stars_4", "$number_stars_5"]
+            }
+        }
+    },
+    {
+        $addFields: {
+            averageRating: {
+                $cond: {
+                    if: { $eq: ["$totalReviews", 0] },
+                    then: 0,
+                    else: {
+                        $divide: [
+                            {$add: [
+                                    { $multiply: ["$number_stars_1", 1] },
+                                    { $multiply: ["$number_stars_2", 2] },
+                                    { $multiply: ["$number_stars_3", 3] },
+                                    { $multiply: ["$number_stars_4", 4] },
+                                    { $multiply: ["$number_stars_5", 5] }
+                                ]},
+                            "$totalReviews"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    {
+        $project: {
+            id_book: 1,
+            title: 1,
+            authors: 1,
+            cover: 1,
+            totalReviews: 1,
+            averageRating: 1
+        }
+    },
+    {
+        $sort: { averageRating: -1 }  // Ordina per la media della valutazione in ordine decrescente
+    },
+    {
+        $limit: 10  // Limita il risultato ai primi 10 libri
+    }
+];
+
 export const addBook = async (req, res) => {
+    //Dati dei libri da salvare
     const { id_book, 
             title, 
             authors,  
@@ -23,7 +72,7 @@ export const addBook = async (req, res) => {
         // Verifico se id libro esiste già nel database
         const existingBookId = await bookModel.findOne({ id_book });
         if (existingBookId) {
-            return res.status(400).json({ 
+            return res.json({ 
                 message: 'Id Book ['+id_book+'] already exist' 
             });
         }
@@ -40,7 +89,6 @@ export const addBook = async (req, res) => {
                 // Se si verifica un errore nel download dell'immagine, loggo l'errore ma continuo senza copertina
             }
         }
-
 
         // Creazione di un nuovo utente nel database
         const newBook = new bookModel({
@@ -75,7 +123,6 @@ export const addBook = async (req, res) => {
             message: 'Errore del server' 
         });
     }
-    
 }
 
 export const addBookContinue = async (req, res) => {
@@ -190,55 +237,8 @@ export const dropAllBooks = async (req, res) => {
 
 export const topRatingBooks = async (req, res) => {
     try {
-        const books = await bookModel.aggregate([
-            {
-                $addFields: {
-                    totalReviews: {
-                        $add: ["$number_stars_1", "$number_stars_2", "$number_stars_3", "$number_stars_4", "$number_stars_5"]
-                    }
-                }
-            },
-            {
-                $addFields: {
-                    averageRating: {
-                        $cond: {
-                            if: { $eq: ["$totalReviews", 0] },
-                            then: 0,
-                            else: {
-                                $divide: [
-                                    {
-                                        $add: [
-                                            { $multiply: ["$number_stars_1", 1] },
-                                            { $multiply: ["$number_stars_2", 2] },
-                                            { $multiply: ["$number_stars_3", 3] },
-                                            { $multiply: ["$number_stars_4", 4] },
-                                            { $multiply: ["$number_stars_5", 5] }
-                                        ]
-                                    },
-                                    "$totalReviews"
-                                ]
-                            }
-                        }
-                    }
-                }
-            },
-            {
-                $project: {
-                    id_book: 1,
-                    title: 1,
-                    authors: 1,
-                    cover: 1,
-                    totalReviews: 1,
-                    averageRating: 1
-                }
-            },
-            {
-                $sort: { averageRating: -1 }  // Ordina per la media della valutazione in ordine decrescente
-            },
-            {
-                $limit: 10  // Limita il risultato ai primi 5 libri
-            }
-        ]);
+        const pipeline = getTopRatingBooksAggregationPipeline();
+        const books = await bookModel.aggregate(pipeline);
 
         if (books.length > 0) {
             return res.json({
@@ -274,6 +274,13 @@ export const topRatingBooksBasedOnUserShelves = async (req, res) => {
 
         // Trova le shelf dell'utente
         const shelves = await shelfModel.findOne({ user: user._id });
+        //se non ha trovato nessuna shelves (utente non ha mai salvato libro)
+        if(!shelves){
+            return res.json({
+                success: false,
+                message: 'No books found in user shelves'
+            });
+        }
 
         // Ottieni tutti i generi dei libri presenti nelle shelf dell'utente
         let genres = [];
@@ -304,58 +311,17 @@ export const topRatingBooksBasedOnUserShelves = async (req, res) => {
         genres = [...new Set(genres)];
 
         // Trova i libri che hanno almeno uno dei generi trovati nelle shelf dell'utente
-        const books = await bookModel.aggregate([
+        const topRatingPipeline = getTopRatingBooksAggregationPipeline();
+        const pipeline = [
             {
                 $match: { genres: { $in: genres } }
             },
-            {
-                $addFields: {
-                    totalReviews: {
-                        $add: ["$number_stars_1", "$number_stars_2", "$number_stars_3", "$number_stars_4", "$number_stars_5"]
-                    }
-                }
-            },
-            {
-                $addFields: {
-                    averageRating: {
-                        $cond: {
-                            if: { $eq: ["$totalReviews", 0] },
-                            then: 0,
-                            else: {
-                                $divide: [
-                                    {
-                                        $add: [
-                                            { $multiply: ["$number_stars_1", 1] },
-                                            { $multiply: ["$number_stars_2", 2] },
-                                            { $multiply: ["$number_stars_3", 3] },
-                                            { $multiply: ["$number_stars_4", 4] },
-                                            { $multiply: ["$number_stars_5", 5] }
-                                        ]
-                                    },
-                                    "$totalReviews"
-                                ]
-                            }
-                        }
-                    }
-                }
-            },
-            {
-                $project: {
-                    id_book: 1,
-                    title: 1,
-                    authors: 1,
-                    cover: 1,
-                    totalReviews: 1,
-                    averageRating: 1
-                }
-            },
-            {
-                $sort: { averageRating: -1 }  // Ordina per la media della valutazione in ordine decrescente
-            },
-            {
-                $limit: 10  // Limita il risultato ai primi 10 libri
-            }
-        ]);
+            ...topRatingPipeline   
+        ];
+        const books = await bookModel.aggregate(pipeline)/*.hint({ averageRating: -1})*/;
+
+        /*const result = await bookModel.aggregate(pipeline).explain("executionStats");
+        console.log("EXPLAIN: "+ JSON.stringify(result, null, 2))*/
 
         if (books.length > 0) {
             return res.json({
@@ -380,7 +346,8 @@ export const topRatingBooksBasedOnUserShelves = async (req, res) => {
 
 
 export const searchBooks = async (req, res) => {
-    const { query, page = 1, limit = 15, orderBy } = req.query;
+    const limit = 15;
+    const { query, page = 1, orderBy } = req.query;
 
     try {
         const skip = (page - 1) * limit;
@@ -391,9 +358,8 @@ export const searchBooks = async (req, res) => {
         } else if (orderBy === 'author') {
             sortCriteria = { authors: 1 }; // Ordina per autore in ordine crescente
         } else if (orderBy === 'pages') {
-            sortCriteria = { pages: 1 }; // Ordina per numero di pagine in ordine crescente
+            sortCriteria = { pages_number: 1 }; // Ordina per numero di pagine in ordine crescente
         } else {
-            // Gestione di default per altri casi di ordinamento
             sortCriteria = { title: 1 }; // Ordine per titolo di default
         }
 
@@ -401,7 +367,7 @@ export const searchBooks = async (req, res) => {
             title: { $regex: query, $options: 'i' }  // 'i' per rendere la ricerca case-insensitive
         }).skip(skip)
         .limit(limit)
-        .sort(sortCriteria); // Applica il criterio di ordinamento;
+        .sort(sortCriteria); //criterio di ordinamento
 
         // Conta il totale dei libri che corrispondono alla query
         const totalBooks = await bookModel.countDocuments({
@@ -409,20 +375,13 @@ export const searchBooks = async (req, res) => {
         });
 
         console.log("libri trovati per [" + query + "] : "+ books.length );
-        /*if (books.length > 0) {*/
-            return res.json({
-                success: true,
-                books,
-                totalBooks,
-                totalPages: Math.ceil(totalBooks / limit),
-                currentPage: parseInt(page)
-            });/*
-        } else {
-            return res.json({
-                success: false,
-                message: 'No books found'
-            });
-        }*/
+        return res.json({
+            success: true,
+            books,
+            totalBooks,
+            totalPages: Math.ceil(totalBooks / limit),
+            currentPage: parseInt(page)
+        });
     } catch (error) {
         console.error('Error while searching for books:', error);
         return res.status(500).json({

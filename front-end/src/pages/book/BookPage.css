@@ -1,3 +1,8 @@
+.book-title{
+    color: #8741CA;
+}
+
+
 .rate-bar > span{
     width: 30px;
 }
@@ -29,4 +34,8 @@
   
 .plot-box > textarea::-webkit-scrollbar-track {
     background-color: #eee; /* Colore della track (fondo) */
+}
+
+.progress-bar {
+    background-color: #8741CA !important;
 }

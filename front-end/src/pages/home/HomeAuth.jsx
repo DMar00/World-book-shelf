@@ -13,9 +13,9 @@ const HomeAuth = ({user}) => {
     <div className='page'>
         <Container className=''>
             <Row className='my-4'>  
-                <Col lg={5} style={{background:'yellow'}}>
+                <Col lg={5} className='d-flex flex-column justify-content-center alig-items-center text-center'>
                   <img src={bookLover} className='bookLover'></img>
-                  <h3>Welcome <span style={{color:'#8841CB'}}>{user.username}</span></h3>
+                  <h3 className='mb-5'>Welcome <span style={{color:'#8841CB'}}>{user.username}</span></h3>
                 </Col>
                 <Col lg={7}>
                   {/**filtrare i libri che come genere hanno i generi dei libri inseriti nelle 2 shelf dell'utente */}

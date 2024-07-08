@@ -22,14 +22,13 @@ const Account = () => {
     return (
         <div className='page'> 
             <Container className=''>
-                    {
-                        isMyAccount ? 
                         <Row className='h-100 my-4'>
-                            <Col lg={3} sm={12} className='d-flex flex-column justify-content-center align-items-center'>
+                            <Col lg={3} sm={12} className='d-flex flex-column align-items-center'>
                                 <img src={avatar} className='avatar'/>
                                 <span className='username'>{userInfo.username}</span>
                                 <span className='name mb-2'>{userInfo.name} {userInfo.surname}</span>
-                                <button className='btn-t1'> Edit profile</button>
+                                {/*isMyAccount ? <button className='btn-t1'> Edit profile</button> : <div></div>*/}
+                            
                             </Col>
                             <Col lg={9} sm={12} className=''>
                                 <Row>
@@ -68,7 +67,7 @@ const Account = () => {
                                     )}
                                 </Row >
                                 <Row className='d-flex mt-5'>
-                                    <h3>My reviews</h3>
+                                    <h3>Reviews</h3>
                                     {reviewedBooks.length === 0 ? (
                                         <div style={{ minHeight: '267.4px' }}>
                                             <p>No books reviewed</p>
@@ -87,7 +86,8 @@ const Account = () => {
                                                         /> 
                                                     </div>
                                                     <MiniBook 
-                                                        image={reviewedBook.book.cover} 
+                                                        image={reviewedBook.book && reviewedBook.book.cover ? reviewedBook.book.cover : null}
+                                                        /*image={reviewedBook.book.cover} */
                                                         title={reviewedBook.book.title} 
                                                         authors={reviewedBook.book.authors} 
                                                         id={reviewedBook.book.id_book}
@@ -99,15 +99,6 @@ const Account = () => {
                                 </Row>
                             </Col>
                         </Row>
-                        
-                        
-                        
-                        
-                        
-                        
-                        : <h3>You're visiting <span style={{color:'#8841CB'}}>{userInfo.username}</span> 's account</h3>
-                    }
-                
             </Container>
         </div>
     )
