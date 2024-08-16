@@ -1,1 +1,0 @@
-differenza tra Binary e Buffer -> Binary tipo di dato MongoDB, Buffer per javascript
