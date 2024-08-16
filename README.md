@@ -16,6 +16,6 @@ World Book Shelf is a platform where users can discover, review, and share books
 - Database: MongoDB
 
 ## Datasets
-You can find the datasets used in this project [here](link-to-datasets).
+You can find the datasets used in this project in the documentation.
 
 
